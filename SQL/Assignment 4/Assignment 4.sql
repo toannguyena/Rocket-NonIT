@@ -29,8 +29,8 @@ CREATE TABLE Department
 DROP TABLE IF EXISTS Employee_Skill_Table;
 CREATE TABLE Employee_Skill_Table
 (
-	Employee_Number 									SMALLINT AUTO_INCREMENT NOT NULL,
-	Skill_Code											VARCHAR(60) NOT NULL,
+	Employee_Number 									SMALLINT AUTO_INCREMENT NOT NULL , 
+	Skill_Code											VARCHAR(60) NOT NULL, 
 	Date_Registered 									DATE NOT NULL,
     FOREIGN KEY (Employee_Number) REFERENCES Employee_Table(Employee_Number)
 );
@@ -62,7 +62,7 @@ VALUES			    ('john wick 1', 1),
                     ('john wick 6', 7),
                     ('john wick 7', 9), 
                     ('john wick 8', 8),
-                    ('john wick 9', 5),
+                    ('john wick 9', 1),
 					('john wick 10', 1);
                   
 	-- Employee_Skill_Table (Employee_Number, Skill_Code, Date Registered)
@@ -71,12 +71,12 @@ INSERT INTO		 	Employee_Skill_Table (Skill_Code, Date_Registered)
 VALUES			    ('Java','2000-01-01'),
 					('Python','2000-01-02'),
                     ('c','2000-03-03'),
-                    ('JavaScript','2000-03-04'),
+                    ('PHP','2000-03-04'),
                     ('PHP','2000-04-05'),
                     ('Ruby','2000-04-06'),
                     ('SWIFT','2000-04-07'), 
                     ('Javad','2000-05-08'),
-                    ('Javac','2000-05-09'),
+                    ('Java','2000-05-09'),
 					('Javas','2000-05-01');
                     
 -- Question 3: Viết lệnh để lấy ra danh sách nhân viên (name) có skill Java
@@ -89,24 +89,32 @@ WHERE 				est.Skill_Code = 'java';
 
 -- Question 4: Viết lệnh để lấy ra danh sách các phòng ban có >3 nhân viên
 
-SELECT 				d.Department_Number,	d.Department_Name,	COUNT(d.Department_Number)	 AS	 Department_count
+SELECT 				et.Department_Number,	d.Department_Name,	COUNT(et.Department_Number)	 AS	 Person
 FROM 				Department d
 INNER JOIN			Employee_Table et 	ON 	et.Department_Number	=	d.Department_Number
-GROUP BY			d.Department_Numbers
-HAVING				COUNT(d.Department_Number)>3;
+GROUP BY			et.Department_Number
+HAVING				COUNT(et.Department_Number)>3;
 
 -- Question 5: Viết lệnh để lấy ra danh sách nhân viên của mỗi văn phòng ban.          
 -- Hướng dẫn: sử dụng GROUP B
 
 
 
+SELECT 			et.Employee_Name , d.Department_Number , et.Employee_Number
+FROM			Department 		d
+JOIN			employee_table 	et
+ON 				et.Department_Number = d.Department_Number
+GROUP BY 		et.Employee_Name , d.Department_Number;
+
+
 
 -- Question 6: Viết lệnh để lấy ra danh sách nhân viên có > 1 skills.    Hướng dẫn: sử dụng DISTINCT 
  
 
-
-
-
-
+SELECT 			et.Employee_Number , et.Employee_Name , et.Department_Number , COUNT(est.Employee_Number) AS Employee_Skill_Count
+FROM 			Employee_Table	 et
+JOIN			Employee_Skill_Table est ON et.Employee_Number = est.Employee_Number
+GROUP BY		est.Employee_Number
+HAVING			COUNT(est.Employee_Number)>1;
 
 
