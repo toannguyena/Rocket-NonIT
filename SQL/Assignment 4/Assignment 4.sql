@@ -6,15 +6,15 @@
 -- Employee_Skill_Table (Employee_Number, Skill_Code, Date Registered)
 -- Question 1: Tạo table với các ràng buộc và kiểu dữ liệu
 
-DROP DATABASE IF EXISTS dpm;
-CREATE DATABASE IF NOT EXISTS dpm;
-USE dpm;
+DROP DATABASE IF EXISTS Human_resouces;
+CREATE DATABASE IF NOT EXISTS Human_resouces;
+USE Human_resouces; 
 
 DROP TABLE IF EXISTS Department;
 CREATE TABLE Department
 (
 	Department_Number 							SMALLINT AUTO_INCREMENT PRIMARY KEY,
-    Department_Name								NVARCHAR(100) NOT NULL UNIQUE
+    Department_Name								VARCHAR(100) NOT NULL UNIQUE
   );  
   
   DROP TABLE IF EXISTS 		Employee_Table;
@@ -22,16 +22,17 @@ CREATE TABLE Department
   (
 	Employee_Number 					SMALLINT AUTO_INCREMENT PRIMARY KEY,
     Employee_Name 						VARCHAR(100) NOT NULL,
-	Department_Number 					SMALLINT,
+	Department_Number 					SMALLINT NOT NULL,
     FOREIGN KEY (Department_Number) REFERENCES Department(Department_Number)
 );
 
 DROP TABLE IF EXISTS Employee_Skill_Table;
 CREATE TABLE Employee_Skill_Table
 (
-	Employee_Number 									SMALLINT AUTO_INCREMENT NOT NULL , 
+	Employee_Number 									SMALLINT NOT NULL, 
 	Skill_Code											VARCHAR(60) NOT NULL, 
 	Date_Registered 									DATE NOT NULL,
+    PRIMARY KEY (Employee_Number, Skill_Code),
     FOREIGN KEY (Employee_Number) REFERENCES Employee_Table(Employee_Number)
 );
 
@@ -67,17 +68,17 @@ VALUES			    ('john wick 1', 1),
                   
 	-- Employee_Skill_Table (Employee_Number, Skill_Code, Date Registered)
 
-INSERT INTO		 	Employee_Skill_Table (Skill_Code, Date_Registered)
-VALUES			    ('Java','2000-01-01'),
-					('Python','2000-01-02'),
-                    ('c','2000-03-03'),
-                    ('PHP','2000-03-04'),
-                    ('PHP','2000-04-05'),
-                    ('Ruby','2000-04-06'),
-                    ('SWIFT','2000-04-07'), 
-                    ('Javad','2000-05-08'),
-                    ('Java','2000-05-09'),
-					('Javas','2000-05-01');
+INSERT INTO		 	Employee_Skill_Table (Employee_Number , Skill_Code , Date_Registered)
+VALUES			    (1,'Java','2000-01-01'),
+					(2,'Python','2000-01-02'),
+                    (3,'c','2000-03-03'),
+                    (4,'PHP','2000-03-04'),
+                    (5,'PHP','2000-04-05'),
+                    (6,'Ruby','2000-04-06'),
+                    (7,'SWIFT','2000-04-07'), 
+                    (8,'Javad','2000-05-08'),
+                    (9,'Java','2000-05-09'),
+					(10,'Javas','2000-05-01');
                     
 -- Question 3: Viết lệnh để lấy ra danh sách nhân viên (name) có skill Java
 -- Hướng dẫn: sử dụng UNION
@@ -102,8 +103,7 @@ HAVING				COUNT(et.Department_Number)>3;
 
 SELECT 			et.Employee_Name , d.Department_Number , et.Employee_Number
 FROM			Department 		d
-JOIN			employee_table 	et
-ON 				et.Department_Number = d.Department_Number
+JOIN			employee_table 	et	ON 	et.Department_Number = d.Department_Number
 GROUP BY 		et.Employee_Name , d.Department_Number;
 
 
@@ -116,5 +116,4 @@ FROM 			Employee_Table	 et
 JOIN			Employee_Skill_Table est ON et.Employee_Number = est.Employee_Number
 GROUP BY		est.Employee_Number
 HAVING			COUNT(est.Employee_Number)>1;
-
 
