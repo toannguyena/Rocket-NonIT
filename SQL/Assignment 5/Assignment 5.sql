@@ -10,7 +10,7 @@ USE adventureworks;
 -- Sau đó trong outer query, sử dụng kết quả từ Sub Query để lấy ra yêu cầu của đề bài.
 
 SELECT 	* 
-	FROM 		Product P
+	FROM 		product P
 	Join 		`productsubcategory` PSC ON P.`ProductSubcategoryID` = PSC.`ProductSubcategoryID`
 	WHERE 		PCS.Name = 'Saddles';
 
@@ -66,14 +66,16 @@ WHERE  		C.name = 'Germany' OR C.name = 'Canada';
 -- SalesOrderID, OrderDate and SalesPersonID. Từ bảng SalesPerson, chúng ta lấy cột BusinessEntityID (là định danh của người sales),
 -- Bonus and the SalesYTD (là đã sale được bao nhiêu người trong năm nay) 
  
-SELECT 			soh.SalesOrderID,soh.OrderDate,soh.SalesPersonID,sp.SalesPersonID AS BusinessEntityID,sp.Bonus,sp.SalesYTD
-FROM 			salesorderheader AS soh
-LEFT JOIN		salesperson AS sp ON sp.SalesPersonID=soh.SalesPersonID
-INNER JOIN		employee AS e ON e.EmployeeID=soh.SalesPersonID
-WHERE			soh.SalesPersonID=NULL AND soh.OnlineOrderFlag=1
-UNION ALL
-SELECT 			soh.SalesOrderID,soh.OrderDate,soh.SalesPersonID,sp.SalesPersonID AS BusinessEntityID,sp.Bonus,sp.SalesYTD
-FROM 			salesorderheader AS soh
-RIGHT JOIN		salesperson AS sp ON sp.SalesPersonID=soh.SalesPersonID;
- 
+SELECT 		soh.SalesorderID , soh.orderDate , sp.SalesPersonID , sp.Bonus , sp.SalesYTD
+FROM		salesperson sp
+JOIN 		salesorderheader soh ON ( sp.SalesPersonID = soh.SalesPersonID)
+WHERE		sp.SalesPersonID=NULL AND OnlineOrderFlag=1;
+
+-- Question 4:
+-- Sử dụng câu query, thêm cột JobTitle and xóa cột SalesPersonID và BusinessEntityID.
+
+SELECT 		soh.SalesorderID , soh.orderDate , sp.Bonus , sp.SalesYTD , e.Title AS JobTitle
+FROM		salesperson sp
+JOIN 		salesorderheader soh ON ( sp.SalesPersonID = soh.SalesPersonID)
+JOIN		employee e ON (sp.SalesPersonID = e.EmployeeID);
 
