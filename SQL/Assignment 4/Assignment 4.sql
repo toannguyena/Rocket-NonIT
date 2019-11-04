@@ -103,8 +103,7 @@ HAVING				COUNT(et.Department_Number)>3;
 
 SELECT 			et.Employee_Name , d.Department_Number , et.Employee_Number
 FROM			Department 		d
-JOIN			employee_table 	et	ON 	et.Department_Number = d.Department_Number
-GROUP BY 		et.Employee_Name , d.Department_Number;
+JOIN			employee_table 	et	ON 	et.Department_Number = d.Department_Number;
 
 
 
