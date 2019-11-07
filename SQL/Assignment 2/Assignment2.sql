@@ -1,4 +1,4 @@
--- EX1---
+    -- EX1---
 
 CREATE DATABASE IF NOT EXISTS fresher;
 USE fresher;
